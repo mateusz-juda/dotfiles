@@ -98,7 +98,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-source ${HOME}/configs/common_sh
 
 setopt no_share_history
 unsetopt share_history

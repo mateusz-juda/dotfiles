@@ -1,0 +1,152 @@
+export EDITOR='nano'
+
+alias ll='ls -lh'
+alias lt='ls -ltrh'
+
+alias e_fast='$EMACS -nw -Q'
+alias ec='$EMACS_CLIENT -c'
+
+alias g='git'
+alias gs='git status'
+alias gc='git commit'
+alias gco='git checkout'
+alias gsb='git show-branch'
+
+alias j='jobs -l'
+alias k9='kill -9'
+
+alias d='docker'
+alias di='docker images'
+alias dp='docker ps'
+alias dr='docker run -ti'
+alias dhome='docker run -ti -v $HOME:$HOME -e HOME=$HOME --workdir $PWD --user $(id -u):$(id -g)'
+
+
+
+function dlatex {
+    docker run --rm -ti -v $HOME:$HOME -e HOME=$HOME --workdir $PWD --user $(id -u):$(id -g)  me-latex $*
+}
+
+
+
+
+alias t='tmux'
+alias tmux_detach_clients='tmux list-clients | cut -f1 -d:  | xargs -n 1 tmux detach-client -t'
+
+alias e='echo'
+alias c="echo -ne '\033c'"
+
+alias grep='grep --color'
+alias rgrep='grep --recursive'
+alias gr='grep'
+alias rgr='grep'
+
+alias psg='ps aux | grep $@'
+function psg_pid () { ps aux | grep $@ | awk '{print $2}'; }
+
+alias o="$OPEN_FILE"
+alias olast='$OPEN_FILE $(ls -tr | tail -n 1)'
+alias h='history'
+alias ha='$HADOOP_HOME/bin/hadoop'
+
+alias p='python'
+
+
+function cutcol {
+    awk -v column=$1 '{print $column}'
+}
+
+
+
+function dgrep {
+    find . -name "$1" -exec grep -i "$2" {} \; -print
+}
+
+function dgrep_names {
+    find . -name "$1" -exec grep --silent -i "$2" {} \; -print
+}
+
+function find_here {
+    find . -name "$1"
+}
+
+function find_symbol {
+    find . -name "*.o" -exec sh -c "nm {} | grep -q $1" \; -print
+}
+
+
+function git_repo_add {
+    ssh repos.capdnet "(cd /var/user_repos/juda/git-repos; git init --bare --shared $1)"
+    git clone repos.capdnet:/var/user_repos/juda/git-repos/$1
+}
+
+function git_repo_get {
+    git clone repos.capdnet:/var/user_repos/juda/git-repos/$1
+}
+
+function git_repo_ls {
+    ssh repos.capdnet "(ls $* /var/user_repos/juda/git-repos)"
+}
+
+
+function update_ssh_agent {
+    echo "Updating ssh-agent socket environment.."
+    echo "Current value:  $SSH_AUTH_SOCK"
+
+    if hash gfind 2>/dev/null; then
+        FIND="gfind"
+    else
+        FIND="find"
+    fi
+    #Listeneres on OSX
+
+    export SSH_AUTH_SOCK=$(${FIND} /tmp/* -user `whoami` \( -name agent\* -o -name Listeners \) -printf '%T@ %p\n' 2>/dev/null | sort -k 1nr | sed 's/^[^ ]* //' | head -n 1)
+
+    if [[ $? -gt 0 ]]; then
+	echo "ERROR!"
+	exit $?
+    fi
+
+    ln -sf "$SSH_AUTH_SOCK" "/tmp/ssh-agent-$USER-screen"
+
+    echo "New value:  $SSH_AUTH_SOCK"
+    echo "All done!"
+}
+
+function remove_ssh_known_host {
+    line_number="$1"
+    if [[ -z "$line_number" ]]; then
+        echo "Give me line number"
+        exit 1
+    fi
+
+    sed -i.bac "${line_number}d" ~/.ssh/known_hosts
+}
+
+
+alias n="ninja"
+alias n1="ninja -j1"
+
+alias caps_lock_up_down='xdotool key Caps_Lock'
+
+function find_my_ip() {
+   only_local="$1"
+
+   if [[ -z "${only_local}" ]]; then
+	    ret_ip=$(ip route get 10.3.6.1 | sed -nr '/src/ s/.*src ([^ ]+).*/\1/p')
+   else
+	    ret_ip=127.0.0.1
+   fi
+
+   echo "${ret_ip}"
+}
+
+function run_jupyer {
+   only_local="$1"
+
+   jupyter-notebook --NotebookApp.iopub_data_rate_limit=0 --MultiKernelManager.default_kernel_name=capdCTS-kernel --no-browser --ip=$(find_my_ip "${only_local}")
+}
+
+function is_inside_docker () {
+    [ -e /proc/self/cgroup ] && ( awk -F/ '$2 == "docker"' /proc/self/cgroup | read)
+}
