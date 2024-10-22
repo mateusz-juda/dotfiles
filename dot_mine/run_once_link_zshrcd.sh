@@ -1,4 +1,4 @@
 #!/bin/bash
 
-mkdir -p $HOME/.zshrc.d
-ln -s $PWD/.mine/common_sh $HOME/.zshrc.d/00_common_sh
+mkdir -p $PWD/.zshrc.d
+ln -s $PWD/common_sh $PWD/.zshrc.d/00_common_sh
