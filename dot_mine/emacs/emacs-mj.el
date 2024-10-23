@@ -209,9 +209,9 @@
 
 
 (require 'helm)
-(require 'helm-config)
+;;(require 'helm-config)
 (require 'helm-files)
-(require 'helm-ls-git)
+;;(require 'helm-ls-git)
 (setq helm-M-x-fuzzy-match t)
 (setq helm-mode-fuzzy-match t)
 (setq helm-completion-in-region-fuzzy-match t)
