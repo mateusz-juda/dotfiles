@@ -61,6 +61,9 @@
 [credential "https://github.com"]
 	username = mateusz-juda
 	helper = "!f() { test \"$1\" = get && echo \"password=$(cat $HOME/.github_token)\"; }; f"
-   
+
+[protocol "file"]
+   allow = always
+
 [includeIf "gitdir:~/.gitconfig.work"]
   path = ~/.gitconfig.work
