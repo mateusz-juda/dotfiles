@@ -54,16 +54,16 @@
 ;;;;
 ;;; TAB
 ;;;;
-ll(require 'smart-tab)
-ll(global-smart-tab-mode 1)
+(require 'smart-tab)
+(global-smart-tab-mode 1)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default c-basic-offset 4)
 
 
 ;;;; xclip
-(require 'xclip)
-(xclip-mode 1)
+;;(require 'xclip)
+;;(xclip-mode 1)
 
 
 ;;   (defun check-expansion ()
@@ -186,14 +186,14 @@ ll(global-smart-tab-mode 1)
 ;;;;
 ;;;;   Frame
 ;;;;
-(require 'framemove)
-;;(framemove-default-keybindings)
-(global-set-key (kbd "C-c <left>")  'windmove-left)
-(global-set-key (kbd "C-c <right>") 'windmove-right)
-(global-set-key (kbd "C-c <up>")    'windmove-up)
-(global-set-key (kbd "C-c <down>")  'windmove-down)
-(windmove-default-keybindings)
-(setq framemove-hook-into-windmove t)
+;; (require 'framemove)
+;; ;;(framemove-default-keybindings)
+;; (global-set-key (kbd "C-c <left>")  'windmove-left)
+;; (global-set-key (kbd "C-c <right>") 'windmove-right)
+;; (global-set-key (kbd "C-c <up>")    'windmove-up)
+;; (global-set-key (kbd "C-c <down>")  'windmove-down)
+;; (windmove-default-keybindings)
+;; (setq framemove-hook-into-windmove t)
 
 (setq auto-mode-alist (cons '("\\.h$" . c++-mode) auto-mode-alist))
 
