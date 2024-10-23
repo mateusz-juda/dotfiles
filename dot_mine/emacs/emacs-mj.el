@@ -493,15 +493,15 @@
 ;;(require 'member-function)
 ;;(setq mf--source-file-extension "cpp")
 
-(require 'color)
+;; (require 'color)
 
-(let ((bg (face-attribute 'default :background)))
-  (custom-set-faces
-   '(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
-   '(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
-   '(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
-   '(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
-   '(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
+;; (let ((bg (face-attribute 'default :background)))
+;;   (custom-set-faces
+;;    '(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
+;;    '(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
+;;    '(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
+;;    '(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+;;    '(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
 
 (column-number-mode)
 (setq fill-column 80)
@@ -674,12 +674,12 @@
 
 
 
-(add-to-list 'load-path "~/configs/emacs/template/lisp")
-(require 'template)
-(template-initialize)
+;;(add-to-list 'load-path "~/configs/emacs/template/lisp")
+;;(require 'template)
+;;(template-initialize)
 ;(add-to-list 'template-find-file-commands
 ;	     '(insert )do-exit-minibuffer)
-(global-set-key "\C-ct" 'template-new-file)
+;;(global-set-key "\C-ct" 'template-new-file)
 
 
 
