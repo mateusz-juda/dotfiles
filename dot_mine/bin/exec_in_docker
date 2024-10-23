@@ -1,0 +1,8 @@
+#!/bin/bash
+
+name="$1"
+cmd="$2"
+
+opts="-e me_project_name_v --workdir $PWD "
+
+docker exec -t -i  ${opts} "${name}" "${cmd}"

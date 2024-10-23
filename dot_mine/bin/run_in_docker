@@ -1,0 +1,20 @@
+#!/bin/bash
+
+image="$1"
+cmd="$2"
+name="$3"
+additional_args="$4"
+   
+if [[ "$(uname)" == 'Darwin' ]]; then
+    net='' # on macOS we cannot have host network and when set then gives problems
+else
+    net='--network host'
+fi
+
+opts="--rm --privileged ${net} -ti -v ${HOME}:${HOME}:delegated -v /var/work/:/var/work/:cached  -e HOME=$HOME -e LOGNAME=$LOGNAME -e USER=$USER -e me_docker_name=${name} -e me_workspace_name_v -e me_workspace_path_v -e me_project_name_v --workdir $PWD --user $(id -u):$(id -g) -v /var/run/nscd:/var/run/nscd -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --cap-add=SYS_PTRACE"
+
+if [[ -n "${name}" ]]; then
+    opts="--name ${name} ${opts}"
+fi
+
+docker run -t -i --rm ${opts} ${additional_args}  "${image}" "${cmd}"

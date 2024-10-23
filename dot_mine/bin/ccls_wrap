@@ -1,0 +1,8 @@
+#!/bin/bash
+
+arg="$@"
+date > ~/tmp/ccls.log
+echo "${arg}" >> ~/tmp/ccls.log
+
+tee ~/tmp/ccls.log |  docker exec -i solveros-dev_processes bash -c \
+  "ccls  ${arg}" | tee ~/tmp/ccls.log
