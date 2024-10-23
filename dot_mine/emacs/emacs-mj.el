@@ -1135,20 +1135,20 @@ prompt the user for a coding system."
 
 
 ;;(setq template-expansion-alist ())
-(add-to-list 'template-expansion-alist
-	     '("CAPD-FILE" (insert (format "%s" (file-name-base (buffer-file-name))))))
-(add-to-list 'template-expansion-alist
-	     '("CAPD-PACKAGE" (insert (format "%s" (capd-file-package (buffer-file-name))))))
-(add-to-list 'template-expansion-alist
-	     '("CAPD-MODULE" (insert (format "%s" (capd-file-module (buffer-file-name))))))
-(add-to-list 'template-expansion-alist
-	     '("CAPD-CLASS" (insert (format "%s" (capd-file-class (buffer-file-name))))))
-(add-to-list 'template-expansion-alist
-             '("CAPD-FILE-GUARD" (insert (upcase
-                                                  (format "CAPD_FILE_%s_%s_%s" (capd-file-package (buffer-file-name))
-                                                         (capd-file-module (buffer-file-name))
-                                                         (capd-file-class (buffer-file-name))))
-                                         )))
+;; (add-to-list 'template-expansion-alist
+;; 	     '("CAPD-FILE" (insert (format "%s" (file-name-base (buffer-file-name))))))
+;; (add-to-list 'template-expansion-alist
+;; 	     '("CAPD-PACKAGE" (insert (format "%s" (capd-file-package (buffer-file-name))))))
+;; (add-to-list 'template-expansion-alist
+;; 	     '("CAPD-MODULE" (insert (format "%s" (capd-file-module (buffer-file-name))))))
+;; (add-to-list 'template-expansion-alist
+;; 	     '("CAPD-CLASS" (insert (format "%s" (capd-file-class (buffer-file-name))))))
+;; (add-to-list 'template-expansion-alist
+;;              '("CAPD-FILE-GUARD" (insert (upcase
+;;                                                   (format "CAPD_FILE_%s_%s_%s" (capd-file-package (buffer-file-name))
+;;                                                          (capd-file-module (buffer-file-name))
+;;                                                          (capd-file-class (buffer-file-name))))
+;;                                          )))
 
 
 ;;(format "%s" template-expansion-alist)
