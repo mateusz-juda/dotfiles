@@ -1670,23 +1670,23 @@ prompt the user for a coding system."
   )
 
 
-;;(setq template-expansion-alist ())
-(add-to-list 'template-expansion-alist
-             '("MJ-CPP-FILE" (insert (format "%s" (file-name-base (buffer-file-name))))))
-(add-to-list 'template-expansion-alist
-	     '("MJ-CPP-FILE-BASENAME" (insert (format "%s" (mj-cpp-file-basename (buffer-file-name))))))
-(add-to-list 'template-expansion-alist
-	     '("MJ-CPP-PACKAGE" (insert (format "%s" (mj-cpp-file-package (buffer-file-name))))))
-(add-to-list 'template-expansion-alist
-	     '("MJ-CPP-MODULE" (insert (format "%s" (mj-cpp-file-module (buffer-file-name))))))
-(add-to-list 'template-expansion-alist
-	     '("MJ-CPP-CLASS" (insert (format "%s" (mj-cpp-file-class (buffer-file-name))))))
-(add-to-list 'template-expansion-alist
-             '("MJ-CPP-FILE-GUARD" (insert (upcase (string-inflection-underscore-function
-                                                    (format "CAPD_FILE_%s_%s_%s" (mj-cpp-file-package (buffer-file-name))
-                                                         (mj-cpp-file-module (buffer-file-name))
-                                                         (mj-cpp-file-class (buffer-file-name)))))
-                                         )))
+;; ;;(setq template-expansion-alist ())
+;; (add-to-list 'template-expansion-alist
+;;              '("MJ-CPP-FILE" (insert (format "%s" (file-name-base (buffer-file-name))))))
+;; (add-to-list 'template-expansion-alist
+;; 	     '("MJ-CPP-FILE-BASENAME" (insert (format "%s" (mj-cpp-file-basename (buffer-file-name))))))
+;; (add-to-list 'template-expansion-alist
+;; 	     '("MJ-CPP-PACKAGE" (insert (format "%s" (mj-cpp-file-package (buffer-file-name))))))
+;; (add-to-list 'template-expansion-alist
+;; 	     '("MJ-CPP-MODULE" (insert (format "%s" (mj-cpp-file-module (buffer-file-name))))))
+;; (add-to-list 'template-expansion-alist
+;; 	     '("MJ-CPP-CLASS" (insert (format "%s" (mj-cpp-file-class (buffer-file-name))))))
+;; (add-to-list 'template-expansion-alist
+;;              '("MJ-CPP-FILE-GUARD" (insert (upcase (string-inflection-underscore-function
+;;                                                     (format "CAPD_FILE_%s_%s_%s" (mj-cpp-file-package (buffer-file-name))
+;;                                                          (mj-cpp-file-module (buffer-file-name))
+;;                                                          (mj-cpp-file-class (buffer-file-name)))))
+;;                                          )))
 
 
 ;;(format "%s" template-expansion-alist)
