@@ -1,0 +1,66 @@
+[core]
+#	excludesfile = /Users/me/Dropbox/configs/git/git.ignore
+	autocrlf = input
+	whitespace = cr-at-eol
+	editor = nano
+	eol = lf
+
+[fetch]
+#   parallel = 8
+[submodule]
+#   fetchJobs = 8
+
+[color]
+  ui = auto
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+ 
+[user]
+	name = Mateusz Juda
+	email = mateusz.juda
+[push]
+	default = simple
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  brl = for-each-ref --sort=committerdate refs/heads/ --format='%(color:green)%(refname)%(color:reset) %(committerdate) %(authorname)'
+  co = checkout
+  df = diff
+  lg = log -p
+  rc = rebase --continue
+  ra = rebase --abort
+  mt = mergetool
+
+[merge]
+	tool = kdiff3
+	renormalize = true
+[mergetool "ediff"]
+	   cmd = $EMACS_CLIENT -c --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+[mergetool "kdiff3NoAuto"]
+	cmd = kdiff3 --L1 \"$MERGED (Base)\" --L2 \"$MERGED (Local)\" --L3 \"$MERGED (Remote)\" -o \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+[mergetool "kdiff3"]
+	cmd = kdiff3 --auto --L1 \"$MERGED (Base)\" --L2 \"$MERGED (Local)\" --L3 \"$MERGED (Remote)\" -o \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+[credential]
+	helper = osxkeychain
+[diff]
+  ignoreSubmodules = dirty
+
+
+[credential "https://github.com"]
+	username = mateusz-juda
+	helper = "!f() { test \"$1\" = get && echo \"password=$(cat $HOME/.github_token)\"; }; f"
+   
+[includeIf "gitdir:~/.gitconfig.work"]
+  path = ~/.gitconfig.work
