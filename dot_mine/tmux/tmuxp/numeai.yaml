@@ -1,0 +1,10 @@
+session_name: numerai
+start_directory: ~/work/numerai
+
+windows:
+- window_name: jupyter
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - ./start-jupyter.sh
+

@@ -1,0 +1,59 @@
+# start_directory: "/tmp"
+
+session_name: CTS
+# before_script: ./capd_verify_project_env.sh
+shell_command_before:
+   - export CTS_SRC_PATH=$HOME/work/cts_projects/
+   - export VF_CLUSTERING=$HOME/work/vector_field_clustering
+suppress_history: false
+
+windows:
+- window_name: capdCTS
+  focus: True
+  #using list-windows we get layout:
+#  layout: cba8,133x91,0,0[133x45,0,0,1,133x45,0,25,2]
+#  layout: main-horizontal
+#  options:
+#    main-pane-height: 35
+  shell_command_before:
+    - date
+  panes:
+  - shell_command:
+    - cd $CTS_SRC_PATH/capdCTS/notebooks
+  - shell_command:
+    - cd $CTS_SRC_PATH/capdCTS
+    focus: true    
+
+- window_name: fasttextnum
+  focus: True
+  panes:
+  - shell_command:
+    - cd $CTS_SRC_PATH/fasttextnum
+  - shell_command:    
+    - cd $CTS_SRC_PATH/fasttextnum/src
+    focus: true
+    
+- window_name: cts_time_series
+  focus: True
+  panes:
+  - shell_command:
+    - cd $CTS_SRC_PATH/cts_time_series/notebooks
+  - shell_command:    
+    - cd $CTS_SRC_PATH/cts_time_series/
+    focus: true
+
+- window_name: cts_hmi
+  focus: True
+  panes:
+  - shell_command:
+    - cd $CTS_SRC_PATH/cts_hmi/notebooks
+  - shell_command:    
+    - cd $CTS_SRC_PATH/cts_hmi/
+    focus: true
+    
+- window_name: vf_clustering
+  panes:
+  - shell_command:
+    - cd $VF_CLUSTERING/notebooks
+  - shell_command:    
+    - cd $VF_CLUSTERING/celery

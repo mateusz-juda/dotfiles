@@ -1,0 +1,161 @@
+#start_directory: "${HOME}/work/dmg-nfdc"
+
+session_name: Solveros work
+shell_command_before:
+   - export me_workspace_path_v="${HOME}/work/dmg-nfdc"
+   - export me_workspace_name_v="solveros"
+   - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+
+windows:
+
+- window_name: Sources
+  layout: tiled
+  panes:
+  - shell_command:
+    - export me_project_name_v="LS3"
+    - cd $(me_src_path)
+  - shell_command:
+    - export me_project_name_v="LS3Controller"
+    - cd $(me_src_path)
+  - shell_command:
+    - export me_project_name_v="LS3Processor"
+    - cd $(me_src_path)
+  - shell_command:
+    - export me_project_name_v="TopoOptLS3"
+    - cd $(me_src_path)
+  - shell_command:
+    - export me_project_name_v="gd-GenesisX"
+    - cd $(me_src_path)
+  - shell_command:
+    - export me_project_name_v="SDMVoxelConverter"
+    - cd $(me_src_path)
+  - shell_command:
+    - export me_project_name_v="SDMVoxelSolver"
+    - cd $(me_src_path)
+
+
+- window_name: Dev Proecesses
+  layout: tiled
+  panes:
+  - shell_command:
+     - cd /var/work/builds/
+     - run_in_docker dev:latest "zsh" "$(me_workspace_name)-dev_processes" " "
+# "socat tcp-listen:8001,reuseaddr exec:'clangd -j=17 --log=verbose --compile-commands-dir=.'" "-p 127.0.0.1:8001:8001"
+  - shell_command:
+     - cd /var/work/builds/
+     - run_in_docker dev-centos7-gcc7:latest zsh "$(me_workspace_name)-builds" " "
+
+- window_name: LS3Runners
+  layout: tiled
+  shell_command_before:
+  - export me_project_name_v="LS3Runners"
+  panes:
+  - shell_command:
+    - cd $(me_src_path)
+  - shell_command:
+    - run_in_docker autodesk-docker.art-bobcat.autodesk.com/agd/agd-ls3-docker:2.1.136 bash "${me_project_name_v}"
+    - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+    - cd $(me_src_path)
+  - shell_command:
+    - run_in_docker nfdc-generate-docker bash "${me_project_name_v}-generate"
+    - cd ${HOME}/work/dmg-nfdc/fusion_projects
+
+- window_name: LS3
+  layout: tiled
+  shell_command_before:
+  - export me_project_name_v="LS3"
+  panes:
+  - shell_command:
+    - cd $(me_src_path)
+  - shell_command:
+    - run_in_docker dev-centos7-gcc7:latest zsh "${me_project_name_v}"
+    - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+    - me_switch_build_type Release
+
+- window_name: LS3Controller
+  layout: tiled
+  shell_command_before:
+  - export me_project_name_v="LS3Controller"
+  panes:
+  - shell_command:
+    - cd $(me_src_path)
+  - shell_command:
+    - run_in_docker dev-centos7-gcc7:latest zsh "${me_project_name_v}"
+    - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+    - me_switch_build_type Release
+
+- window_name: LS3Processor
+  layout: tiled
+  shell_command_before:
+  - export me_project_name_v="LS3Processor"
+  panes:
+  - shell_command:
+    - cd $(me_src_path)
+  - shell_command:
+    - run_in_docker dev-centos7-gcc7:latest zsh "${me_project_name_v}"
+    - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+    - me_switch_build_type Release
+
+- window_name: TopoOptLS3
+  layout: tiled
+  shell_command_before:
+  - export me_project_name_v="TopoOptLS3"
+  panes:
+  - shell_command:
+    - cd $(me_src_path)
+  - shell_command:
+    - run_in_docker dev-centos7-gcc7:latest zsh "${me_project_name_v}"
+    - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+    - me_switch_build_type Release
+
+- window_name: gd-GenesisX
+  layout: tiled
+  shell_command_before:
+  - export me_project_name_v="gd-GenesisX"
+  panes:
+  - shell_command:
+    - cd $(me_src_path)
+  - shell_command:
+    - run_in_docker dev-centos7-gcc7:latest zsh "${me_project_name_v}"
+    - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+    - me_switch_build_type Release
+
+
+- window_name: SDMVoxelConverter
+  layout: tiled
+  shell_command_before:
+  - export me_project_name_v="SDMVoxelConverter"
+  panes:
+  - shell_command:
+    - cd $(me_src_path)
+  - shell_command:
+    - run_in_docker dev-centos7-gcc7:latest zsh "${me_project_name_v}"
+    - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+    - me_switch_build_type Release
+#  - shell_command:
+#    - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+#    - me_switch_build_type Release_macOS
+
+- window_name: SDMVoxelSolver
+  layout: tiled
+  shell_command_before:
+  - export me_project_name_v="SDMVoxelSolver"
+  panes:
+  - shell_command:
+    - cd $(me_src_path)
+  - shell_command:
+    - run_in_docker dev-centos7-gcc7:latest zsh "${me_project_name_v}"
+    - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+    - me_switch_build_type Release
+
+- window_name: SDMVoxelSolver_org
+  layout: tiled
+  shell_command_before:
+  - export me_project_name_v="SDMVoxelSolver_org"
+  panes:
+  - shell_command:
+    - cd $(me_src_path)
+  - shell_command:
+    - run_in_docker dev-centos7-gcc7:latest zsh "${me_project_name_v}"
+    - source "${HOME}/.tmuxp/project_helper_funcs.sh"
+    - me_switch_build_type Release

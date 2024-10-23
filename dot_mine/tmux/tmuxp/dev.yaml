@@ -1,0 +1,19 @@
+start_directory: "${HOME}/work"
+
+session_name: common
+      
+windows:
+- window_name: scratch
+  focus: True
+  panes:
+  - shell_command:
+      - date
+      - echo xxx
+  - shell_command:
+      - date
+
+- window_name: dockers
+  panes:
+  - shell_command:
+      - cd $HOME/work/dmg-nfdc/docker-dev_machine/arch
+  - run_in_docker dev:latest zsh

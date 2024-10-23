@@ -1,0 +1,55 @@
+# start_directory: "/tmp"
+
+session_name: CAPD ${CAPD_SESSION}
+before_script: ./capd_verify_project_env.sh
+shell_command_before:
+   - export CAPD_SRC_PATH=$HOME/work/capd
+   - export CAPD_BUILD_PATH=$HOME/work/capd/build/$CAPD_BUILD
+
+
+windows:
+- window_name: capd src
+  focus: True
+  #using list-windows we get layout:
+#  layout: cba8,133x91,0,0[133x45,0,0,1,133x45,0,25,2]
+#  layout: main-horizontal
+#  options:
+#    main-pane-height: 35
+  shell_command_before:
+    - date
+  panes:
+  - shell_command:
+    - cd $CAPD_SRC_PATH/capdRedHom
+    focus: true
+  - shell_command:
+    - cd $CAPD_SRC_PATH/capdRedHom_modules_unofficial
+
+- window_name: capd build tests ($CAPD_BUILD)
+  focus: True
+  panes:
+  - shell_command:
+    - cd $CAPD_BUILD_PATH/capdRedHom/tests
+    focus: true
+
+- window_name: capd build ($CAPD_BUILD)
+#  focus: True
+#  layout: main-horizontal
+#  options:
+#    main-pane-height: 35
+  panes:
+  - shell_command:
+    - cd $CAPD_BUILD_PATH/capdRedHom
+    focus: true
+  - shell_command:
+    - cd $CAPD_BUILD_PATH/
+
+- window_name: capdRedHom-envs
+  shell_command_before:
+    - source $CAPD_BUILD_PATH/bin/capdRedHom-envs
+  panes:
+  - shell_command:
+    - cd ~/work
+    focus: true
+  - shell_command:
+    - cd ~/work
+

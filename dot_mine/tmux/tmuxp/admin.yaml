@@ -1,0 +1,80 @@
+session_name: admin
+suppress_history: false
+
+windows:
+- window_name: virt-matinf
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - ssh root@10.0.6.1
+
+- window_name: bare-metal
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - ssh root@10.0.8.1
+  - shell_command:
+    - ssh root@10.0.2.1
+  - shell_command:
+    - ssh root@10.0.3.1
+
+- window_name: kubernetes
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - ssh root@10.3.8.126
+  - shell_command:
+    - ssh root@10.3.8.127
+  - shell_command:
+    - ssh root@10.3.2.127
+  - shell_command:
+    - ssh root@10.0.2.241
+  - shell_command:
+    - ssh root@10.0.2.242
+
+- window_name: storage
+  focus: True
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - ssh root@10.0.8.10
+  - shell_command:
+    - ssh root@10.0.8.10
+
+- window_name: docker-dev
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - ssh root@rysy-docker-dev.admin
+  - shell_command:
+    - ssh root@fermi-docker-dev.admin
+
+- window_name: rysy-dev-services
+  layout: even-vertical
+  panes:
+   - shell_command:
+      - ssh root@rysy-dev-services.admin
+
+- window_name: rysy-pxe
+  layout: even-vertical
+  panes:
+   - shell_command:
+      - ssh root@10.3.2.12
+      
+- window_name: core-services
+  layout: even-vertical
+  panes:
+   - shell_command:
+      - ssh root@capdnet-core-services.admin
+
+- window_name: access-1
+  layout: even-vertical
+  panes:
+   - shell_command:
+      - ssh root@access-1.admin
+
+- window_name: users
+  layout: even-vertical
+  panes:
+   - shell_command:
+      - ssh root@rysy-mvf.admin
