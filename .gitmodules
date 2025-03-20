@@ -1,3 +1,0 @@
-[submodule "tmux-plugins_tmp"]
-	path = dot_mine/tmux/tpm
-	url = https://github.com/tmux-plugins/tpm.git
