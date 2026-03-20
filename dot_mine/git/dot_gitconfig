@@ -53,7 +53,8 @@
 [mergetool "kdiff3"]
 	cmd = kdiff3 --auto --L1 \"$MERGED (Base)\" --L2 \"$MERGED (Local)\" --L3 \"$MERGED (Remote)\" -o \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
 [credential]
-	helper = osxkeychain
+#	helper = osxkeychain
+
 [diff]
   ignoreSubmodules = dirty
 
