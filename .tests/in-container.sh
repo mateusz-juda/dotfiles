@@ -51,15 +51,46 @@ check_home() {
     done
 }
 
+with_umask() { local m=$1; shift; ( umask "$m"; "$@" ); }
+
 # check_idempotent <home> <source>: second apply under another umask and a
 # forced rerun of run_once scripts must change nothing.
 check_idempotent() {
     local h=$1 s=$2 before
     before=$(modes "$h")
     check "verify clean after apply" cz "$h" "$s" verify --exclude=scripts
-    check "reapply with umask 0007"  bash -c "umask 0007; $(declare -f cz); cfg=$cfg; cz '$h' '$s' apply"
-    check "rerun run_once scripts"   bash -c "$(declare -f cz); cfg=$cfg; cz '$h' '$s' state delete-bucket --bucket=scriptState && cz '$h' '$s' apply"
+    check "reapply with umask 0007"  with_umask 0007 cz "$h" "$s" apply
+    check "rerun run_once scripts"   cz "$h" "$s" state delete-bucket --bucket=scriptState
+    check "apply after rerun"        cz "$h" "$s" apply
     check "no file or mode changes"  diff <(echo "$before") <(modes "$h")
+}
+
+# check_update <home> <source>: chezmoi update twice under different umasks
+# completes without prompts and changes no file or mode.
+check_update() {
+    local h=$1 s=$2 before
+    before=$(modes "$h")
+    check "update with umask 0022"   with_umask 0022 cz "$h" "$s" update
+    check "update with umask 0007"   with_umask 0007 cz "$h" "$s" update
+    check "no changes after update"  diff <(echo "$before") <(modes "$h")
+}
+
+# no_stderr <cmd...>: succeeds and writes nothing to stderr.
+no_stderr() {
+    local err
+    err=$("$@" 2>&1 >/dev/null) || { echo "$err"; return 1; }
+    [ -z "$err" ] || { echo "$err"; return 1; }
+}
+
+# check_zsh <home>: run last, since zsh writes caches into the home.
+check_zsh() {
+    local h=$1 e=/tmp/home-empty-zshrcd
+    check "zsh starts cleanly"       no_stderr env HOME="$h" zsh -i -c exit
+    check "oh-my-zsh plugins loaded" env HOME="$h" zsh -i -c 'alias gst >/dev/null'
+    mkdir -p "$e/.zshrc.d"
+    ln -sfn "$(readlink -f "$h/.oh-my-zsh")" "$e/.oh-my-zsh"
+    ln -sfn "$(readlink -f "$h/.zshrc")" "$e/.zshrc"
+    check "zsh starts with empty .zshrc.d" no_stderr env HOME="$e" zsh -i -c exit
 }
 
 # --- personal repo from the snapshot ---------------------------------------
@@ -72,6 +103,7 @@ h=/tmp/home-standalone; mkdir -p "$h"
 check "apply" cz "$h" "$personal" apply
 check_home "$h" "$h"
 check_idempotent "$h" "$personal"
+check_zsh "$h"
 
 echo "== standalone, existing file at a link path"
 h=/tmp/home-seeded; mkdir -p "$h"; echo "keep me" > "$h/.tmux.conf"
@@ -94,6 +126,8 @@ h=/tmp/home-submodule; mkdir -p "$h"
 check "apply" cz "$h" "$clone" apply
 check_home "$h" "$h/.personal"
 check_idempotent "$h" "$clone"
+check_update "$h" "$clone"
+check_home "$h" "$h/.personal"
 
 echo
 if [ "$fails" -eq 0 ]; then echo "GREEN"; else echo "RED: $fails failed"; exit 1; fi

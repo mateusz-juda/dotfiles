@@ -1,0 +1,6 @@
+# Editor backups, logs and Emacs package state; Emacs regenerates them locally.
+*~
+\#*\#
+.\#*
+*.log
+dot_mine/emacs/emacs.d/elpa/gnupg/

@@ -31,7 +31,7 @@ Every source file whose name lacks a leading `.` is deployed, so a root file lan
 
 ## Verify
 
-`.tests/apply.sh` snapshots the working tree into a container and applies it standalone, with an existing file at a link path, and as a submodule of a fake consumer repo. It then checks links, executables, ignored files, and that a second apply under a different umask and a forced rerun of `run_once` scripts changes nothing. Done means it prints `GREEN`.
+`.tests/apply.sh` snapshots the working tree into a container and applies it standalone, with an existing file at a link path, and as a submodule of a fake consumer repo. It then checks links, executables and ignored files; that a second apply under a different umask, a forced rerun of `run_once` scripts and two `chezmoi update` runs change nothing; and that zsh starts without errors, with plugins loaded, even with an empty `.zshrc.d`. Done means it prints `GREEN`.
 
 ## Guardrails
 

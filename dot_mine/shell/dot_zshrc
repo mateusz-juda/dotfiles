@@ -70,6 +70,36 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 
 
+plugins=(
+    git
+    ruby
+    python
+    emacs
+    gnu-utils
+    history
+    man
+    pip
+    pipenv
+    rsync
+    sudo
+    timer
+)
+
+if hash docker &> /dev/null; then
+    plugins+=(docker docker-compose)
+fi
+
+#if is_inside_docker &> /dev/null; then
+#    plugins+=(ssh-agent)
+#fi
+
+if hash fab &> /dev/null; then
+    plugins+=(fabric)
+fi
+if [[ "$(uname)" == 'Darwin' ]]; then
+    plugins+=(iterm2 macos)
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -103,38 +133,7 @@ setopt no_share_history
 unsetopt share_history
 
 
-plugins=(
-    git
-    ruby
-    python
-    emacs
-    gnu-utils
-    history
-    man
-    pip
-    pipenv
-    rsync
-    sudo
-    timer
-)
-
-if hash docker &> /dev/null; then
-    plugins+=(docker docker-compose docker-machine)
-fi
-
-#if is_inside_docker &> /dev/null; then
-#    plugins+=(ssh-agent)
-#fi
-
-if hash fab &> /dev/null; then
-    plugins+=(fabric)
-fi
-if [[ "$(uname)" == 'Darwin' ]]; then
-    plugins+=(iterm2 osx)
-fi
-
-
-for sub_file in $HOME/.zshrc.d/*; do
+for sub_file in $HOME/.zshrc.d/*(N); do
   [[ ${sub_file:t} != '~'* ]] || continue
   source "$sub_file"
 done
