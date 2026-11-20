@@ -1,0 +1,6 @@
+# Repo-only files: never deployed. Patterns match target paths relative to this directory.
+AGENTS.md
+CLAUDE.md
+README.md
+**/*~
+**/#*#
