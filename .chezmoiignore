@@ -1,6 +1,9 @@
-# Repo-only files: never deployed. Patterns match target paths relative to this directory.
+# Never deployed or managed: repo-only files, editor backups, oh-my-zsh runtime cache.
+# Patterns match target paths relative to this directory. Older chezmoi (2.57)
+# reads a hash sign anywhere in a line as a comment start: keep it out of patterns.
 AGENTS.md
 CLAUDE.md
 README.md
 **/*~
-**/#*#
+.oh-my-zsh/cache
+.oh-my-zsh/cache/**

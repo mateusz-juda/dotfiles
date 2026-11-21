@@ -1,7 +1,14 @@
 #!/bin/bash
 # Runs inside the chezmoi-test container; started by .tests/apply.sh.
 # Uses the fake submodule name "personal".
-set -uo pipefail
+set -euo pipefail
+
+# CHEZMOI_VERSION=x.y.z installs that release; "image" keeps the image's chezmoi.
+if [ "${CHEZMOI_VERSION:-image}" != image ]; then
+    curl -fsLS get.chezmoi.io | sh -s -- -b /tmp/bin -t "v$CHEZMOI_VERSION" >/dev/null 2>&1
+    export PATH=/tmp/bin:$PATH
+fi
+echo "=== $(chezmoi --version | cut -d, -f1)"
 
 export XDG_CACHE_HOME=/tmp/cache   # download externals once per run
 git config --global user.name test
@@ -65,13 +72,17 @@ check_idempotent() {
     check "no file or mode changes"  diff <(echo "$before") <(modes "$h")
 }
 
-# check_update <home> <source>: chezmoi update twice under different umasks
-# completes without prompts and changes no file or mode.
+# check_update <home> <deploy root> <source>: after zsh has filled the
+# oh-my-zsh cache, chezmoi update twice under different umasks, refreshing
+# externals, completes without prompts, keeps the cache and changes no file or mode.
 check_update() {
-    local h=$1 s=$2 before
+    local h=$1 r=$2 s=$3 before
+    mkdir -p "$r/.oh-my-zsh/cache"   # as left by installs before the cache was ignored
+    check "zsh fills oh-my-zsh cache" in_zsh "$h" exit
     before=$(modes "$h")
-    check "update with umask 0022"   with_umask 0022 cz "$h" "$s" update
-    check "update with umask 0007"   with_umask 0007 cz "$h" "$s" update
+    check "update with umask 0022"   with_umask 0022 cz "$h" "$s" update --refresh-externals=always
+    check "update with umask 0007"   with_umask 0007 cz "$h" "$s" update --refresh-externals=always
+    check "oh-my-zsh cache kept"     test -d "$r/.oh-my-zsh/cache/completions"
     check "no changes after update"  diff <(echo "$before") <(modes "$h")
 }
 
@@ -82,20 +93,23 @@ no_stderr() {
     [ -z "$err" ] || { echo "$err"; return 1; }
 }
 
+# in_zsh <home> <command>: interactive zsh in that home.
+in_zsh() { env HOME="$1" XDG_CACHE_HOME="$1/.cache" zsh -i -c "$2"; }
+
 # check_zsh <home>: run last, since zsh writes caches into the home.
 check_zsh() {
     local h=$1 e=/tmp/home-empty-zshrcd
-    check "zsh starts cleanly"       no_stderr env HOME="$h" zsh -i -c exit
-    check "oh-my-zsh plugins loaded" env HOME="$h" zsh -i -c 'alias gst >/dev/null'
+    check "zsh starts cleanly"       no_stderr in_zsh "$h" exit
+    check "oh-my-zsh plugins loaded" in_zsh "$h" 'alias gst >/dev/null'
     mkdir -p "$e/.zshrc.d"
     ln -sfn "$(readlink -f "$h/.oh-my-zsh")" "$e/.oh-my-zsh"
     ln -sfn "$(readlink -f "$h/.zshrc")" "$e/.zshrc"
-    check "zsh starts with empty .zshrc.d" no_stderr env HOME="$e" zsh -i -c exit
+    check "zsh starts with empty .zshrc.d" no_stderr in_zsh "$e" exit
 }
 
 # --- personal repo from the snapshot ---------------------------------------
 personal=/tmp/repos/personal
-mkdir -p "$personal" && cp -a /snapshot/. "$personal"
+mkdir -p "$personal" && cp -a --no-preserve=ownership /snapshot/. "$personal"
 git -C "$personal" init -q && git -C "$personal" add -A && git -C "$personal" commit -qm snapshot
 
 echo "== standalone"
@@ -126,7 +140,7 @@ h=/tmp/home-submodule; mkdir -p "$h"
 check "apply" cz "$h" "$clone" apply
 check_home "$h" "$h/.personal"
 check_idempotent "$h" "$clone"
-check_update "$h" "$clone"
+check_update "$h" "$h/.personal" "$clone"
 check_home "$h" "$h/.personal"
 
 echo
